@@ -5,25 +5,47 @@ import { map } from 'rxjs/operators/map';
 import { Subscription } from 'rxjs/Subscription';
 
 enum EmojiTranslateMode {
-    toEmoji = 'EMOJI',
-    toText = 'TEXT'
+    emoji = 'EMOJI',
+    text = 'TEXT'
 }
 
 customElements.define(
     'emoji-translate',
     class extends HTMLElement {
         translatedText: string = '';
-        translateMode: EmojiTranslateMode = EmojiTranslateMode.toEmoji;
+        translateMode: EmojiTranslateMode = EmojiTranslateMode.emoji;
 
         __input$: Subscription;
 
         get template() {
             return html`
-                <div class="container">
-                    <input type="text" class="translate"/>
-                    <div>${this.translatedText}</div>
-                </div>
-                
+                <style>
+                    :host {
+                        display: flex;
+                        flex-flow: column nowrap;
+                        align-items: center;
+                        position: relative;
+                        width: 100%;
+                        box-sizing: border-box;
+                    }
+                    input.translate {
+                        padding: 0.85em 1.5em;
+                        flex: 1;
+                        align-self: normal;
+                        border-radius: 2em;
+                        background: #fff;
+                        color: #535d92;
+                        outline: none;
+                        border: 1px solid #e3e3e3;
+                        line-height: var(--emoji-translate-input-size, 10px);
+                        font-size: var(--emoji-translate-input-size, 10px);
+                    }
+                    .translated {
+                        font-size: var(--emoji-translate-input-size, 10px);
+                    }
+                </style>
+                <input type="text" class="translate"/>
+                <div class="translated">${this.translatedText}</div>
             `;
         }
         connectedCallback() {
@@ -48,10 +70,10 @@ customElements.define(
         }
 
         toggleTranslateMode() {
-            if (this.translateMode == EmojiTranslateMode.toEmoji) {
-                this.translateMode = EmojiTranslateMode.toText;
+            if (this.translateMode == EmojiTranslateMode.emoji) {
+                this.translateMode = EmojiTranslateMode.text;
             } else {
-                this.translateMode = EmojiTranslateMode.toEmoji;
+                this.translateMode = EmojiTranslateMode.emoji;
             }
         }
 
@@ -68,7 +90,7 @@ customElements.define(
         }
 
         private __translate(value: string) {
-            if (this.translateMode == EmojiTranslateMode.toEmoji) {
+            if (this.translateMode == EmojiTranslateMode.emoji) {
                 this.translatedText = this.translateToEmoji(value);
             } else {
                 this.translatedText = this.translateFromEmoji(value);
