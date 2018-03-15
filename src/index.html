@@ -7,8 +7,21 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Emoji Translate</title>
     <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat');
+
+        @font-face {
+            font-family: system;
+            font-style: normal;
+            font-weight: 300;
+            src: local(".SFNSText-Light"), local(".HelveticaNeueDeskInterface-Light"), local(".LucidaGrandeUI"), local("Ubuntu Light"), local("Segoe UI Light"), local("Roboto-Light"), local("DroidSans"), local("Tahoma");
+        }
+
         :root {
             --emoji-translate-input-size: 20px;
+        }
+
+        body {
+            font-family: "system"
         }
 
         body,
@@ -29,6 +42,13 @@
             width: 100vw;
             padding: 10px;
             position: relative;
+        }
+
+        h1 {
+            font-family: 'Montserrat', "system";
+            font-style: italic;
+            text-transform: uppercase;
+            text-align: center;
         }
     </style>
 </head>

@@ -7,6 +7,7 @@ customElements.define(
     class extends HTMLElement {
         get template() {
             return html`
+                <h1>Emoji Translator</h1>
                 <emoji-translate></emoji-translate>
             `;
         }

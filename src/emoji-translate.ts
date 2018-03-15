@@ -30,6 +30,7 @@ customElements.define(
                     }
                     input.translate {
                         padding: 0.85em 1.5em;
+                        font-family: inherit;
                         flex: 1;
                         align-self: normal;
                         border-radius: 2em;
@@ -42,9 +43,10 @@ customElements.define(
                     }
                     .translated {
                         font-size: var(--emoji-translate-input-size, 10px);
+                        padding-top: 20px;
                     }
                 </style>
-                <input type="text" class="translate"/>
+                <input type="text" class="translate" placeholder="Translate your text!"/>
                 <div class="translated">${this.translatedText}</div>
             `;
         }
@@ -59,7 +61,7 @@ customElements.define(
             )
                 .pipe(
                     map((ev) => (ev.srcElement as HTMLInputElement).value),
-                    debounceTime(200)
+                    debounceTime(150)
                 )
                 .subscribe((value) => this.__translate(value));
         }
