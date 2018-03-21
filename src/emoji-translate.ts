@@ -1,4 +1,4 @@
-import { html, render } from 'lit-html';
+import { html, render } from 'lit-html/lib/lit-extended';
 import { fromEvent } from 'rxjs/observable/fromEvent';
 import { debounceTime } from 'rxjs/operators/debounceTime';
 import { map } from 'rxjs/operators/map';
@@ -77,6 +77,15 @@ customElements.define(
             } else {
                 this.translateMode = EmojiTranslateMode.emoji;
             }
+            const input = (this.shadowRoot.querySelector('.translate') as HTMLInputElement)
+            const inputValue = input.value;
+            const translatedText = this.translatedText;
+            
+            this.translatedText = inputValue;
+            input.value = translatedText;
+
+            render(this.template, this.shadowRoot);
+
         }
 
         translateToEmoji(value: string) {
