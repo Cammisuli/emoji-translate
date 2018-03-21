@@ -4,6 +4,9 @@ import { debounceTime } from 'rxjs/operators/debounceTime';
 import { map } from 'rxjs/operators/map';
 import { Subscription } from 'rxjs/Subscription';
 
+const __TRANSLATE = Symbol('translate');
+const __INPUT = Symbol('inputSubscription')
+
 enum EmojiTranslateMode {
     emoji = 'EMOJI',
     text = 'TEXT'
@@ -15,7 +18,7 @@ customElements.define(
         translatedText: string = '';
         translateMode: EmojiTranslateMode = EmojiTranslateMode.emoji;
 
-        __input$: Subscription;
+        private [__INPUT]: Subscription;
 
         get template() {
             return html`
@@ -55,7 +58,7 @@ customElements.define(
             render(this.template, this.shadowRoot);
 
             // create fromEvent observable
-            this.__input$ = fromEvent<KeyboardEvent>(
+            this[__INPUT] = fromEvent<KeyboardEvent>(
                 this.shadowRoot.querySelector('.translate'),
                 'keyup'
             )
@@ -63,12 +66,12 @@ customElements.define(
                     map((ev) => (ev.srcElement as HTMLInputElement).value),
                     debounceTime(150)
                 )
-                .subscribe((value) => this.__translate(value));
+                .subscribe((value) => this[__TRANSLATE](value));
         }
 
         disconnectedCallback() {
             console.log('bye!');
-            this.__input$.unsubscribe();
+            this[__INPUT].unsubscribe();
         }
 
         toggleTranslateMode() {
@@ -100,7 +103,7 @@ customElements.define(
             return unescape(escape(value).replace(/u.{8}/g, ''));
         }
 
-        private __translate(value: string) {
+        private [__TRANSLATE](value: string) {
             if (this.translateMode == EmojiTranslateMode.emoji) {
                 this.translatedText = this.translateToEmoji(value);
             } else {
